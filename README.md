@@ -1,7 +1,7 @@
 SAFE fork
 ============
 
-This is a fork [SAFE](https://github.com/baryshnikova-lab/safepy), which was developed by Anastasia Baryshnikova and described in the following paper:
+This is a fork of [SAFE](https://github.com/baryshnikova-lab/safepy), which was developed by Anastasia Baryshnikova and described in the following paper:
 
 The main repository for this code is at <https://github.com/baryshnikova-lab/safepy>. Please subscribe to the repository to receive live updates about new code releases and bug reports.
 > Baryshnikova, Anastasia. "Systematic functional annotation and visualization of biological networks." Cell systems 2.6 (2016): 412-421.
