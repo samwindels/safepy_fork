@@ -1,4 +1,4 @@
-INTRODUCTION
+SAFE fork
 ============
 
 This is a fork [SAFE](https://github.com/baryshnikova-lab/safepy), which was developed by Anastasia Baryshnikova and described in the following paper:
