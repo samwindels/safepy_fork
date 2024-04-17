@@ -9,5 +9,5 @@ The main repository for this code is at <https://github.com/baryshnikova-lab/saf
 We use the SAFE framework for evaulation purposes in the following paper:
 > insert paper here
 
-To enable the use of SAFE in our experiments, we have made the following changes to the original codebase in this fork:
+To enable the use of SAFE in our experiments, we added the following functionality in this fork:
 - We added the option to read precomputed 2D embeddings
