@@ -401,7 +401,7 @@ class SAFE:
                 all_shortest_paths = dict(nx.all_pairs_dijkstra_path_length(self.graph, cutoff=nr))
 
             neighbors = [(s, t) for s in all_shortest_paths for t in all_shortest_paths[s].keys()]
-
+ 
             for i in neighbors:
                 neighborhoods[i] = 1
 
