@@ -194,7 +194,7 @@ class SAFE:
             raise ValueError(('%s is not a valid setting for background. '
                               'Valid options are: attribute_file, network.' % user_setting))
 
-        if self.node_distance_metric not in ['euclidean', 'shortpath', 'shortpath_weighted_layout']:
+        if self.node_distance_metric not in ['euclidean', 'shortpath', 'shortpath_weighted_layout', 'shortpath_weighted_layout_fast']:
             user_setting = self.node_distance_metric
             self.node_distance_metric = self.default_config.get('nodeDistanceType')    # Restore the default value.
             raise ValueError(('%s is not a valid setting for node_distance_metric. '
@@ -396,9 +396,41 @@ class SAFE:
                 nr = self.neighborhood_radius * (np.max(x) - np.min(x))
                 all_shortest_paths = dict(nx.all_pairs_dijkstra_path_length(self.graph,
                                                                             weight='length', cutoff=nr))
+                print(len(all_shortest_paths))
+            if self.node_distance_metric == 'shortpath_weighted_layout_fast':
+                x = list(dict(self.graph.nodes.data('x')).values())
+                nr = self.neighborhood_radius * (np.max(x) - np.min(x))
+                # all_shortest_paths = dict(nx.all_pairs_dijkstra_path_length(self.graph,
+                #                                                             weight='length', cutoff=nr))
+                import igraph 
+                edges = list(self.graph.edges(data=True))
+                edge_list = [(u, v) for u, v, d in edges]
+                weights = [d['length'] for u, v, d in edges]
+
+                g = igraph.Graph(edges=edge_list)
+                g.es['length'] = weights
+
+                distance_matrix = g.distances(weights='length')
+                distance_matrix = np.array(distance_matrix)
+                rows, cols = np.where(distance_matrix < nr)
+
+                all_shortest_paths = dict()
+                nodes = list(self.graph.nodes())
+
+                for row, col in zip(rows, cols):
+                    node_i = nodes[row]
+                    node_j = nodes[col]
+                    dist = distance_matrix[row,col]
+                    if node_i in all_shortest_paths:
+                        all_shortest_paths[node_i][node_j]=dist
+                    else:
+                        all_shortest_paths[node_i]={}
+                        all_shortest_paths[node_i][node_j]=dist
+                
             elif self.node_distance_metric == 'shortpath':
                 nr = self.neighborhood_radius
                 all_shortest_paths = dict(nx.all_pairs_dijkstra_path_length(self.graph, cutoff=nr))
+                
 
             neighbors = [(s, t) for s in all_shortest_paths for t in all_shortest_paths[s].keys()]
  
